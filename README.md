@@ -27,6 +27,7 @@ If employee information input is left blank, a reminder message will display.
 
 ## File location
 CSS code is located in assets -> CSS folder
+
 JavaScript code is located in asset -> Js folder
 
 ## Deploy
