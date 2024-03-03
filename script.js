@@ -78,7 +78,7 @@ const displayEmployees = function(employeesArray) {
 
     employeeTable.append(newTableRow);
   };
-};
+}
 
 
 const trackEmployeeData = function() {
