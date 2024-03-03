@@ -25,6 +25,10 @@ If employee information input is left blank, a reminder message will display.
 
 * `trackEmployeeData`: This function will execute when the "Add Employees" button is clicked. It will take the array generated in your `collectEmployees` function, sort the employees by last name, and place them on a table on the page using the provided `displayEmployees` function.  Additionally, the function will execute the `displayAverageSalary` function to log the average employee salary to the console, and execute the `getRandomEmployee` function to log a random employees information to the console.
 
+## File location
+CSS code is located in assets -> CSS folder
+JavaScript code is located in asset -> Js folder
+
 ## Deploy
 The URL of the deployed application: https://saraz-git.github.io/develop-payroll-tracker/
 
