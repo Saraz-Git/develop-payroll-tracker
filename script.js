@@ -2,106 +2,124 @@
 const addEmployeesBtn = document.querySelector('#add-employees-btn');
 
 // Collect employee data
-const collectEmployees = function() {
-  // TODO: Get user input to create and return an array of employee objects 
+const collectEmployees = function () {
+
   let employeesArray = [];
-  let keepAdding= true;
-  while(keepAdding){   
-    let employee={
+  let keepAdding = true;
+  let tries = 0;
+
+  while (keepAdding) {
+    let employee = {
       firstName: window.prompt("Enter first name:"),
       lastName: window.prompt("Enter last name:"),
       salary: window.prompt("Enter salary:"),
     };
-    employeesArray.push(employee);
-    keepAdding = window.confirm("Do you want to add another employee?");
-  };  
+    //if user input is empty in either column, alert will display reminder
+    if (employee.firstName === "" || employee.lastName === "" || employee.salary === "") {
+      window.alert("You must not leave any input blank");
+      tries++;
+      keepAdding = true;
+      if (tries == 3) { keepAdding = false;};
+    } else {
+        employeesArray.push(employee);
+        keepAdding = window.confirm("Do you want to add another employee?");
+      };
+    };
   return employeesArray;
-};
 
-// Display the average salary
-const displayAverageSalary = function(employeesArray) {
-  // TODO: Calculate and display the average salary 
-  let num = employeesArray.length;
-  let tot =0;
-  for(let i=0; i < num; i++){
-    tot += parseInt(employeesArray[i].salary);
   };
-  let averageSalary = tot/num;
-  console.log(`The average employee salary between our ${num} employee(s) is $${averageSalary}.`);
-};
-//displayAverageSalary(employeesArray);
+ 
+  // Display the average salary
+  const displayAverageSalary = function (employeesArray) {
 
-// Select a random employee
-const getRandomEmployee = function(employeesArray) {
-  // TODO: Select and display a random employee
-  const index = Math.floor(Math.random() * employeesArray.length);
-  let randomEmployee = employeesArray[index];
-  console.log(`Congratulations to ${randomEmployee.firstName} ${randomEmployee.lastName}, our random draw winner!`);
-};
+    let num = employeesArray.length;
+    let tot = 0;
+    for (let i = 0; i < num; i++) {
+      tot += parseFloat(employeesArray[i].salary);
+    };
+    if (num !== 0) {
+      let averageSalary = tot / num;
+      console.log(`The average employee salary between our ${num} employee(s) is $${averageSalary}.`);
+    } else {
+      console.log("Employee number must be more than 0.")
+    };
+  };
 
-/*
-  ====================
-  STARTER CODE
-  Do not modify any of the code below this line:
-*/
+  // Select a random employee
+  const getRandomEmployee = function (employeesArray) {
 
-// Display employee data in an HTML table
-const displayEmployees = function(employeesArray) {
-  // Get the employee table
-  const employeeTable = document.querySelector('#employee-table');
+    if (employeesArray.length === 0) {
+      console.log("We won't be able to pick from 0 employee.");
+    } else {
+      const index = Math.floor(Math.random() * employeesArray.length);
+      let randomEmployee = employeesArray[index];
+      console.log(`Congratulations to ${randomEmployee.firstName} ${randomEmployee.lastName}, our random draw winner!`);
+    };
+  };
 
-  // Clear the employee table
-  employeeTable.innerHTML = '';
+  /*
+    ====================
+    STARTER CODE
+    Do not modify any of the code below this line:
+  */
 
-  // Loop through the employee data and create a row for each employee
-  for (let i = 0; i < employeesArray.length; i++) {
-    const currentEmployee = employeesArray[i];
+  // Display employee data in an HTML table
+  const displayEmployees = function (employeesArray) {
+    // Get the employee table
+    const employeeTable = document.querySelector('#employee-table');
 
-    const newTableRow = document.createElement("tr");
+    // Clear the employee table
+    employeeTable.innerHTML = '';
 
-    const firstNameCell = document.createElement("td");
-    firstNameCell.textContent = currentEmployee.firstName;
-    newTableRow.append(firstNameCell);
+    // Loop through the employee data and create a row for each employee
+    for (let i = 0; i < employeesArray.length; i++) {
+      const currentEmployee = employeesArray[i];
 
-    const lastNameCell = document.createElement("td");
-    lastNameCell.textContent = currentEmployee.lastName;
-    newTableRow.append(lastNameCell);
+      const newTableRow = document.createElement("tr");
 
-    const salaryCell = document.createElement("td");
-    // Format the salary as currency
-    salaryCell.textContent = currentEmployee.salary.toLocaleString("en-US",{
-      style:"currency",
-      currency:"USD"
+      const firstNameCell = document.createElement("td");
+      firstNameCell.textContent = currentEmployee.firstName;
+      newTableRow.append(firstNameCell);
+
+      const lastNameCell = document.createElement("td");
+      lastNameCell.textContent = currentEmployee.lastName;
+      newTableRow.append(lastNameCell);
+
+      const salaryCell = document.createElement("td");
+      // Format the salary as currency
+      salaryCell.textContent = currentEmployee.salary.toLocaleString("en-US", {
+        style: "currency",
+        currency: "USD"
+      });
+
+      newTableRow.append(salaryCell);
+
+      employeeTable.append(newTableRow);
+    };
+  }
+
+
+  const trackEmployeeData = function () {
+    const employees = collectEmployees();
+
+    console.table(employees);
+
+    displayAverageSalary(employees);
+
+    console.log('==============================');
+
+    getRandomEmployee(employees);
+
+    employees.sort(function (a, b) {
+      if (a.lastName < b.lastName) {
+        return -1;
+      } else {
+        return 1;
+      }
     });
 
-    newTableRow.append(salaryCell);
-
-    employeeTable.append(newTableRow);
+    displayEmployees(employees);
   };
-}
 
-
-const trackEmployeeData = function() {
-  const employees = collectEmployees();
-
-  console.table(employees);
-
-  displayAverageSalary(employees);
-
-  console.log('==============================');
-
-  getRandomEmployee(employees);
-
-  employees.sort(function(a,b) {
-    if (a.lastName < b.lastName) {
-      return -1;
-    } else {
-      return 1;
-    }
-  });
-
-  displayEmployees(employees);
-};
-
-// Add event listener to 'Add Employees' button
-addEmployeesBtn.addEventListener('click', trackEmployeeData);
+  // Add event listener to 'Add Employees' button
+  addEmployeesBtn.addEventListener('click', trackEmployeeData);
